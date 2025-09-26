@@ -4,7 +4,7 @@ from optuna.samplers import GPSampler
 import torch
 import gc
 from trl import SFTTrainer, SFTConfig
-from trl.trainer.utils import train_on_responses_only
+from unsloth.chat_templates import train_on_responses_only
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from unsloth import FastLanguageModel
 from datasets import load_dataset
