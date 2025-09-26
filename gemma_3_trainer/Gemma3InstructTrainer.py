@@ -171,6 +171,7 @@ class Gemma3InstructTrainer():
             packing=bool(model_config.get("packing", False)),
             fp16=bool(model_config.get("fp16", True)),
             bf16=bool(model_config.get("bf16", False)),
+            device_map={'':torch.cuda.current_device()}
         )
 
         trainer = SFTTrainer(
