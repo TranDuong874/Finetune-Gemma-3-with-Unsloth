@@ -1,1 +1,1 @@
-from .Gemma3InstrctTrainer import Gemma3InstrctTrainer
+from .Gemma3InstructTrainer import Gemma3InstructTrainer

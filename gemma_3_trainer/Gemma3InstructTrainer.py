@@ -9,7 +9,7 @@ from transformers import AutoTokenizer, AutoModelForCausalLM
 from unsloth import FastLanguageModel
 from datasets import load_dataset
 
-class Gemma3InstrctTrainer():
+class Gemma3InstructTrainer():
     def __init__(self, config):
         self.default_config = config
         self.dataset = None
