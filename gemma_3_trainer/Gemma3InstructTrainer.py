@@ -1,12 +1,12 @@
+from unsloth import FastLanguageModel
+from unsloth.chat_templates import train_on_responses_only
 import yaml
 import optuna
 from optuna.samplers import GPSampler
 import torch
 import gc
 from trl import SFTTrainer, SFTConfig
-from unsloth.chat_templates import train_on_responses_only
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from unsloth import FastLanguageModel
 from datasets import load_dataset
 
 class Gemma3InstructTrainer():
@@ -175,7 +175,7 @@ class Gemma3InstructTrainer():
 
         trainer = SFTTrainer(
             model=model,
-            # tokenizer=tokenizer,
+            tokenizer=tokenizer,
             train_dataset=self.dataset['train'],
             eval_dataset=self.dataset['valid'],
             args=args
