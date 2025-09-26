@@ -27,7 +27,7 @@ class Gemma3InstructTrainer():
                 convo, 
                 tokenize=False, 
                 add_generation_prompt=False
-            ) for convo in batch["conversations"]
+            ) for convo in batch["messages"]
         ]
         return {'text': texts}
 
@@ -115,7 +115,7 @@ class Gemma3InstructTrainer():
         trial_config['peft_config'] = peft_config
         
         return trial_config
-        
+
     def _train_model(self, config, trial=None, skip_data_loading=False):
         """Train model with given configuration"""
         model_config = config.get('model', {})
