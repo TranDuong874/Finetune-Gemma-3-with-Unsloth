@@ -9,7 +9,6 @@ from trl import SFTTrainer, SFTConfig
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from datasets import load_dataset
 
-import os
 local_rank = int(os.environ.get("LOCAL_RANK", 0))
 torch.cuda.set_device(local_rank)
 
@@ -136,7 +135,6 @@ class Gemma3InstructTrainer():
             load_in_4bit=bool(model_config.get('load_in_4bit')),
             load_in_8bit=bool(model_config.get('load_in_8bit')),
             torch_dtype=model_config.get('torch_dtype'), 
-            device_map={"": local_rank},  # 👈 each rank maps to its own GPU
         )
         
         if self.tokenizer is None:
