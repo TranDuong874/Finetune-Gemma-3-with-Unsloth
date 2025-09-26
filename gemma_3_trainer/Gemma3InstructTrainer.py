@@ -131,7 +131,9 @@ class Gemma3InstructTrainer():
             max_seq_length=int(model_config.get('max_length')),
             load_in_4bit=bool(model_config.get('load_in_4bit')),
             load_in_8bit=bool(model_config.get('load_in_8bit')),
-            torch_dtype=model_config.get('torch_dtype')
+            torch_dtype=model_config.get('torch_dtype'), 
+            device_map={"": torch.cuda.current_device()},  # accelerate assigns this per process
+
         )
         
         if self.tokenizer is None:
