@@ -169,8 +169,8 @@ class Gemma3InstructTrainer():
             eval_strategy=str(model_config.get("eval_strategy", "epoch")),
             gradient_checkpointing=bool(model_config.get("gradient_checkpointing", False)),
             packing=bool(model_config.get("packing", False)),
-            fp16=bool(model_config.get("fp16"), True),
-            bf16=bool(model_config.get("bf16"), False),
+            fp16=bool(model_config.get("fp16", True)),
+            bf16=bool(model_config.get("bf16", False)),
         )
 
         trainer = SFTTrainer(
