@@ -175,7 +175,7 @@ class Gemma3InstructTrainer():
 
         trainer = SFTTrainer(
             model=model,
-            tokenizer=self.tokenizer,
+            # tokenizer=tokenizer,
             train_dataset=self.dataset['train'],
             eval_dataset=self.dataset['valid'],
             args=args
