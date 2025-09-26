@@ -26,7 +26,7 @@ if __name__ == '__main__':
         config = yaml.safe_load(file)
     
     if args.model == 'gemma-3-it':
-        finetuner = Gemma3Finetuner(config)
+        finetuner = Gemma3InstructTrainer(config)
         results = finetuner.train()
         print(f'Training completed. Results: {results}')
     else:
