@@ -1,6 +1,6 @@
 import yaml
 import argparse
-from Gemma3InstructTrainer import Gemma3InstructTrainer
+from gemma_3_trainer import Gemma3InstructTrainer
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
