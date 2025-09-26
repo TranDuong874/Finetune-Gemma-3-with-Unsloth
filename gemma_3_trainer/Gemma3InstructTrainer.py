@@ -88,13 +88,20 @@ class Gemma3InstructTrainer():
         for param, space_config in hp_space.items():
             if param in ['learning_rate', 'weight_decay', 'lora_dropout']:
                 if space_config['type'] == 'loguniform':
-                    value = trial.suggest_float(param, space_config['low'], space_config['high'], log=True)
+                    low = float(space_config['low'])
+                    high = float(space_config['high'])
+                    value = trial.suggest_float(param, low, high, log=True)
                 elif space_config['type'] == 'uniform':
-                    value = trial.suggest_float(param, space_config['low'], space_config['high'])
+                    low = float(space_config['low'])
+                    high = float(space_config['high'])
+                    value = trial.suggest_float(param, low, high)
             elif param in ['r', 'lora_alpha', 'per_device_train_batch_size', 'gradient_accumulation_steps', 'warmup_steps', 'num_train_epochs']:
-                value = trial.suggest_int(param, space_config['low'], space_config['high'])
+                low = int(space_config['low'])
+                high = int(space_config['high'])
+                value = trial.suggest_int(param, low, high)
             elif param in ['optim', 'lr_scheduler_type']:
-                value = trial.suggest_categorical(param, space_config['choices'])
+                choices = list(space_config['choices'])
+                value = trial.suggest_categorical(param, choices)
             else:
                 continue
             
@@ -108,7 +115,7 @@ class Gemma3InstructTrainer():
         trial_config['peft_config'] = peft_config
         
         return trial_config
-
+        
     def _train_model(self, config, trial=None, skip_data_loading=False):
         """Train model with given configuration"""
         model_config = config.get('model', {})
