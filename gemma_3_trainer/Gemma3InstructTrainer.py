@@ -39,9 +39,9 @@ class Gemma3InstructTrainer():
             
         print("Loading datasets from files (checking cache first)...")
         data_files = {
-            'train': self.default_config['dataset']['train_path'],
-            'valid': self.default_config['dataset']['valid_path'],
-            'test': self.default_config['dataset']['test_path'],
+            'train': str(self.default_config['dataset']['train_path']),
+            'valid': str(self.default_config['dataset']['valid_path']),
+            'test': str(self.default_config['dataset']['test_path']),
         }
 
         self.dataset = load_dataset(
@@ -120,10 +120,10 @@ class Gemma3InstructTrainer():
 
         # Load model and tokenizer
         model, tokenizer = FastLanguageModel.from_pretrained(
-            model_config.get('model_name'),
-            max_seq_length=model_config.get('max_length'),
-            load_in_4bit=model_config.get('load_in_4bit'),
-            load_in_8bit=model_config.get('load_in_8bit'),
+            str(model_config.get('model_name')),
+            max_seq_length=int(model_config.get('max_length')),
+            load_in_4bit=bool(model_config.get('load_in_4bit')),
+            load_in_8bit=bool(model_config.get('load_in_8bit')),
         )
         
         if self.tokenizer is None:
@@ -132,35 +132,35 @@ class Gemma3InstructTrainer():
 
         model = FastLanguageModel.get_peft_model(
             model,
-            r=peft_config.get('r'), 
-            finetune_mlp_modules=peft_config.get('finetune_mlp_modules'),  
-            target_modules=peft_config.get('target_modules'), 
-            lora_alpha=peft_config.get('lora_alpha'),  
-            lora_dropout=peft_config.get('lora_dropout'),  
+            r=int(peft_config.get('r')), 
+            finetune_mlp_modules=bool(peft_config.get('finetune_mlp_modules')),  
+            target_modules=list(peft_config.get('target_modules')), 
+            lora_alpha=int(peft_config.get('lora_alpha')),  
+            lora_dropout=float(peft_config.get('lora_dropout')),  
             bias=peft_config.get('bias'), 
-            random_state=peft_config.get('random_state'), 
-            use_rslora=peft_config.get('use_rslora'),  
+            random_state=int(peft_config.get('random_state')) if peft_config.get('random_state') is not None else None, 
+            use_rslora=bool(peft_config.get('use_rslora')),  
         )
 
         args = SFTConfig(
-            dataset_text_field="text",
-            output_dir=model_config.get("output_dir", "results"),
-            per_device_train_batch_size=model_config.get("per_device_train_batch_size"),
-            gradient_accumulation_steps=model_config.get("gradient_accumulation_steps"),
-            warmup_steps=model_config.get("warmup_steps"),
-            num_train_epochs=model_config.get("num_train_epochs"),
-            max_steps=model_config.get("max_steps"),
-            learning_rate=model_config.get("learning_rate"),
-            logging_steps=model_config.get("logging_steps"),
-            optim=model_config.get("optim"),
-            weight_decay=model_config.get("weight_decay"),
-            lr_scheduler_type=model_config.get("lr_scheduler_type"),
-            seed=model_config.get("seed"),
-            report_to=model_config.get("report_to"),
-            save_strategy=model_config.get("save_strategy", "epoch"),
-            eval_strategy=model_config.get("eval_strategy", "epoch"),
-            gradient_checkpointing=model_config.get("gradient_checkpointing", False),
-            packing=model_config.get("packing", False),
+            dataset_text_field=str("text"),
+            output_dir=str(model_config.get("output_dir", "results")),
+            per_device_train_batch_size=int(model_config.get("per_device_train_batch_size")),
+            gradient_accumulation_steps=int(model_config.get("gradient_accumulation_steps")),
+            warmup_steps=int(model_config.get("warmup_steps")),
+            num_train_epochs=int(model_config.get("num_train_epochs")),
+            max_steps=int(model_config.get("max_steps")),
+            learning_rate=float(model_config.get("learning_rate")),
+            logging_steps=int(model_config.get("logging_steps")),
+            optim=str(model_config.get("optim")),
+            weight_decay=float(model_config.get("weight_decay")),
+            lr_scheduler_type=str(model_config.get("lr_scheduler_type")),
+            seed=int(model_config.get("seed")),
+            report_to=str(model_config.get("report_to")),
+            save_strategy=str(model_config.get("save_strategy", "epoch")),
+            eval_strategy=str(model_config.get("eval_strategy", "epoch")),
+            gradient_checkpointing=bool(model_config.get("gradient_checkpointing", False)),
+            packing=bool(model_config.get("packing", False)),
         )
 
         trainer = SFTTrainer(
@@ -195,7 +195,7 @@ class Gemma3InstructTrainer():
 
     def _run_trial(self, config):
         hp_search_config = self.default_config.get('hp_search', {})
-        n_trials = hp_search_config.get('n_trials', 6)
+        n_trials = int(hp_search_config.get('n_trials', 6))
         
         if self.dataset is None:
             print("Loading data for hyperparameter search...")
