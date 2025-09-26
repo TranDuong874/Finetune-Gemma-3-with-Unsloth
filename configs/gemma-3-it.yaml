@@ -19,8 +19,11 @@ model:
   report_to: "none"                        
   load_in_8bit: false
   load_in_4bit: false
-  max_steps: 30                             
+  max_steps: 30
+  bf16: false
+  fp16: true                    
   torch_dtype: "float16"
+
 peft_config:
   r: 8
   lora_alpha: 32
